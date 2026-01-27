@@ -22,6 +22,20 @@ cd panen-tweet
 pip install -e .
 ```
 
+### 🐧 Running on Google Colab / Linux Server
+
+Jika Anda menjalankan di Google Colab atau Linux Server (VPS), Anda **WAJIB** menginstall Google Chrome.
+
+Kami sudah menyertakan perintah otomatis untuk ini:
+
+```bash
+# 1. Install library
+!pip install panen-tweet
+
+# 2. Install Google Chrome (Sekali jalan)
+!panen-tweet install-chrome
+```
+
 ## 🔑 Mendapatkan Auth Token
 
 Sebelum menggunakan, Anda perlu mendapatkan **auth_token** dari akun Twitter/X Anda:

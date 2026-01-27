@@ -64,9 +64,22 @@ class TwitterScraper:
             self.driver = webdriver.Chrome(service=service, options=chrome_options)
             print("WebDriver berhasil disiapkan.")
             return True
-        except (WebDriverException, ValueError) as e:
-            print("Error saat menyiapkan WebDriver.")
-            print(f"Detail error: {e}")
+        except Exception as e:
+            print("❌ Error saat menyiapkan WebDriver.")
+            print(f"Detail error: {str(e)}")
+
+            if "cannot find Chrome binary" in str(e):
+                import platform
+                if platform.system() == "Linux":
+                    print("\n⚠️  DETEKSI LINUX/COLAB: Google Chrome belum terinstall!")
+                    print("Silakan jalankan perintah berikut di terminal/sel Anda untuk menginstall:")
+                    print("-" * 50)
+                    print("!wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb")
+                    print("!dpkg -i google-chrome-stable_current_amd64.deb")
+                    print("!apt-get install -f -y")
+                    print("-" * 50)
+                    print("Setelah install, restart runtime/kernel Anda.")
+
             return False
 
     def login(self):

@@ -64,8 +64,55 @@ def get_user_input():
     return keyword, target_count, start_date_obj, end_date_obj, interval_days, lang, search_type
 
 
+def install_chrome_linux():
+    """Fungsi helper untuk install Chrome di Linux/Colab"""
+    import subprocess
+    import sys
+    import platform
+
+    if platform.system() != "Linux":
+        print("❌ Fitur ini hanya untuk sistem operasi Linux (termasuk Google Colab).")
+        print("Untuk Windows/Mac, silakan download Chrome dari website resmi.")
+        return
+
+    print("🚀 Memulai instalasi Google Chrome...")
+
+    commands = [
+        "wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb",
+        "dpkg -i google-chrome-stable_current_amd64.deb || apt-get install -f -y"
+    ]
+
+    try:
+        if subprocess.call(["which", "google-chrome"], stdout=subprocess.DEVNULL) == 0:
+            print("✅ Google Chrome sudah terinstall!")
+            return
+
+        for cmd in commands:
+            print(f"Exec: {cmd}")
+            subprocess.run(cmd, shell=True, check=True)
+
+        print("\n✅ Google Chrome berhasil diinstall!")
+        print("Silakan jalankan ulang script/notebook Anda.")
+
+    except subprocess.CalledProcessError as e:
+        print(f"\n❌ Gagal menginstall Chrome: {e}")
+        print("Cobalah jalankan perintah ini secara manual:")
+        print("!wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb")
+        print("!dpkg -i google-chrome-stable_current_amd64.deb")
+        print("!apt-get install -f -y")
+    except Exception as e:
+        print(f"\n❌ Error tidak terduga: {e}")
+
+
 def main():
     """Fungsi utama untuk CLI"""
+    import sys
+
+    # Cek arguments khusus
+    if len(sys.argv) > 1 and sys.argv[1] == "install-chrome":
+        install_chrome_linux()
+        return
+
     print("="*60)
     print("       SCRAPE-X - Twitter/X Scraping Tool")
     print("="*60)
