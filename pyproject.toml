@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.7"
 license = {text = "MIT"}
 authors = [
-    {name = "Ramadhani", email = "rhamadhanigb19@gmail..com"}
+    {name = "Ramadhani", email = "rhamadhanigb19@gmail.com"}
 ]
 keywords = ["twitter", "scraping", "selenium", "web-scraping", "x-scraper","panen-tweet","x"]
 classifiers = [
@@ -38,7 +38,7 @@ Homepage = "https://github.com/Dhaniaaa/panen-tweet"
 Source = "https://github.com/Dhaniaaa/panen-tweet"
 
 [project.scripts]
-scrape-x = "scrape_x.cli:main"
+panen-tweet = "scrape_x.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["."]

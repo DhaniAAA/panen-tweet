@@ -1,256 +1,340 @@
-# Scrape-X 🐦
+# 🐦 Panen Tweet - Twitter/X Scraper
 
+[![PyPI version](https://badge.fury.io/py/panen-tweet.svg)](https://pypi.org/project/panen-tweet/)
 [![Python 3.7+](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-**Scrape-X** adalah tool powerful untuk scraping Twitter/X menggunakan Selenium. Tool ini memungkinkan Anda mengekstrak tweet berdasarkan kata kunci, rentang tanggal, bahasa, dan jenis tweet (teratas/terbaru).
-
-## ✨ Fitur
-
-- 🔍 **Pencarian Fleksibel**: Cari tweet berdasarkan kata kunci
-- 📅 **Filter Tanggal**: Tentukan rentang tanggal yang spesifik
-- 🌍 **Multi-bahasa**: Support untuk filter bahasa
-- 🔝 **Jenis Tweet**: Pilih antara tweet teratas atau terbaru
-- 📊 **Export CSV**: Simpan hasil dalam format CSV
-- 🔄 **Scraping Bertahap**: Scraping otomatis dengan interval untuk menghindari rate limit
-- 🤖 **Headless Mode**: Jalankan browser tanpa GUI
+**Panen Tweet** adalah tool powerful untuk scraping Twitter/X menggunakan Selenium. Dengan tool ini, Anda dapat mengekstrak tweet berdasarkan kata kunci, rentang tanggal, bahasa, dan jenis tweet (teratas/terbaru) dengan mudah.
 
 ## 📦 Instalasi
 
-### Instalasi dari Source (Development)
+### Instalasi dari PyPI (Recommended)
 
 ```bash
-# Clone repository
-git clone https://github.com/yourusername/Scrapping-X.git
-cd Scrapping-X
+pip install panen-tweet
+```
 
-# Install dalam mode development
+### Instalasi dari Source
+
+```bash
+git clone https://github.com/Dhaniaaa/panen-tweet.git
+cd panen-tweet
 pip install -e .
 ```
 
-### Instalasi dari PyPI (Setelah publish)
+## 🔑 Mendapatkan Auth Token
 
-```bash
-pip install scrape-x
-```
+Sebelum menggunakan, Anda perlu mendapatkan **auth_token** dari akun Twitter/X Anda:
 
-### Instalasi Manual dari ZIP
+### Langkah-langkah:
 
-```bash
-# Download dan extract ZIP, lalu:
-cd Scrapping-X
-pip install .
-```
+1. **Login** ke [x.com](https://x.com) menggunakan browser Anda
+2. Tekan **F12** untuk membuka Developer Tools
+3. Buka tab **Application** (Chrome) atau **Storage** (Firefox)
+4. Di sidebar kiri, expand **Cookies** → klik **`https://x.com`**
+5. Cari cookie dengan nama **`auth_token`**
+6. **Klik** pada cookie tersebut dan **salin nilai (value)** nya
+7. Nilai ini yang akan Anda gunakan
+
+### ⚠️ PENTING - Keamanan Token:
+
+- **JANGAN** bagikan auth_token Anda kepada siapapun
+- **JANGAN** commit auth_token ke Git/GitHub
+- Token ini memberikan akses penuh ke akun Twitter/X Anda
+- Jika token ter-expose, segera ganti password Twitter/X Anda
 
 ## 🚀 Cara Penggunaan
 
-### 1. Dapatkan Auth Token
+### Opsi 1: Command Line Interface (Termudah)
 
-Sebelum menggunakan, Anda perlu mendapatkan cookie `auth_token` dari akun Twitter/X Anda:
-
-1. Login ke [x.com](https://x.com)
-2. Buka Developer Tools (tekan `F12`)
-3. Pergi ke tab **Application** > **Storage** > **Cookies** > `https://x.com`
-4. Cari cookie dengan nama `auth_token`
-5. Salin nilai (value) dari cookie tersebut
-
-⚠️ **PENTING**: Jangan bagikan `auth_token` Anda kepada siapapun!
-
-### 2. Menggunakan Command Line Interface (CLI)
-
-Setelah instalasi, Anda bisa langsung menggunakan command `scrape-x`:
+Setelah instalasi, jalankan command berikut di terminal:
 
 ```bash
-scrape-x
+panen-tweet
 ```
 
-Anda akan diminta memasukkan:
+Program akan meminta Anda untuk:
 
-- Auth token
-- Kata kunci pencarian
-- Jumlah tweet per sesi
-- Tanggal mulai dan selesai
-- Interval scraping
-- Kode bahasa
-- Jenis tweet (Top/Latest)
+1. **Memasukkan auth_token**
+2. **Kata kunci** yang ingin dicari
+3. **Jumlah tweet** maksimal per sesi
+4. **Tanggal mulai** (format: YYYY-MM-DD)
+5. **Tanggal selesai** (format: YYYY-MM-DD)
+6. **Interval hari** per sesi scraping
+7. **Kode bahasa** (contoh: `id` untuk Indonesia, `en` untuk English)
+8. **Jenis tweet** (1 untuk Top, 2 untuk Terbaru/Latest)
 
-### 3. Menggunakan sebagai Library Python
+**Contoh interaksi:**
 
-#### Contoh Basic:
+```
+TWITTER/X SCRAPER - PANEN TWEET
+...
+Masukkan auth_token Anda: <paste_token_anda_disini>
+
+1. Masukkan kata kunci/topik pencarian: python programming
+2. Berapa jumlah MAKSIMAL tweet yang ingin diambil PER SESI? 100
+3. Masukkan TANGGAL MULAI KESELURUHAN (YYYY-MM-DD): 2024-01-01
+4. Masukkan TANGGAL SELESAI KESELURUHAN (YYYY-MM-DD): 2024-01-07
+5. Berapa hari interval per sesi scraping? (misal: 1 untuk per hari): 1
+6. Masukkan kode bahasa (misal: 'id' untuk Indonesia, 'en' untuk Inggris): en
+7. Pilih jenis tweet (1 untuk Top, 2 untuk Terbaru): 2
+```
+
+Program akan otomatis:
+
+- Scraping tweet sesuai parameter
+- Menyimpan hasil ke file CSV
+- Menghapus duplikat otomatis
+
+**Output:** File CSV dengan nama seperti `tweets_pythonprogramming_latest_20240101-20240107.csv`
+
+### Opsi 2: Menggunakan sebagai Library Python
+
+Jika Anda ingin mengintegrasikan ke dalam kode Python Anda:
 
 ```python
 from scrape_x import TwitterScraper
 import datetime
+import os
+
+# Setup auth token (gunakan environment variable untuk keamanan)
+# Windows: $env:TWITTER_AUTH_TOKEN = "your_token_here"
+# Linux/Mac: export TWITTER_AUTH_TOKEN="your_token_here"
+auth_token = os.getenv('TWITTER_AUTH_TOKEN', 'your_auth_token_here')
 
 # Inisialisasi scraper
 scraper = TwitterScraper(
-    auth_token="your_auth_token_here",
-    scroll_pause_time=5,
-    headless=True
+    auth_token=auth_token,
+    scroll_pause_time=5,  # Waktu jeda antar scroll (detik)
+    headless=True         # Set False untuk melihat browser
 )
 
 # Scraping dengan rentang tanggal
 df = scraper.scrape_with_date_range(
     keyword="python programming",
-    target_per_session=100,
+    target_per_session=100,      # 100 tweets per sesi
     start_date=datetime.datetime(2024, 1, 1),
     end_date=datetime.datetime(2024, 1, 7),
-    interval_days=1,
-    lang='en',
-    search_type='latest'
+    interval_days=1,             # Scraping per hari
+    lang='en',                   # Bahasa English
+    search_type='latest'         # 'top' atau 'latest'
 )
 
-# Simpan hasil
+# Simpan hasil ke CSV
 if df is not None:
-    scraper.save_to_csv(df, "tweets_python.csv")
-    print(f"Berhasil mengambil {len(df)} tweets!")
+    scraper.save_to_csv(df, "hasil_scraping.csv")
+    print(f"✅ Berhasil mengambil {len(df)} tweets!")
+    print(df.head())
+else:
+    print("❌ Tidak ada data yang berhasil diambil")
 ```
 
-#### Contoh Advanced dengan Custom Configuration:
+### Opsi 3: Menggunakan Environment Variable (Recommended untuk Security)
 
-```python
-from scrape_x import TwitterScraper
-import datetime
+**Windows PowerShell:**
 
-# Inisialisasi dengan konfigurasi custom
-scraper = TwitterScraper(
-    auth_token="your_auth_token",
-    scroll_pause_time=3,  # Pause lebih cepat
-    headless=False  # Tampilkan browser
-)
+```powershell
+# Set environment variable
+$env:TWITTER_AUTH_TOKEN = "your_auth_token_here"
 
-# Setup driver manual
-if scraper.setup_driver():
-    scraper.login()
+# Jalankan program
+panen-tweet
+```
 
-    # Scraping manual
-    tweets = scraper.scrape_tweets(
-        query="machine%20learning%20lang%3Aen",
-        target_count=50,
-        search_type='top'
-    )
+**Windows CMD:**
 
-    print(f"Ditemukan {len(tweets)} tweets")
+```cmd
+set TWITTER_AUTH_TOKEN=your_auth_token_here
+panen-tweet
+```
 
-    # Cleanup
-    scraper.quit()
+**Linux/Mac:**
+
+```bash
+export TWITTER_AUTH_TOKEN="your_auth_token_here"
+panen-tweet
+```
+
+Atau buat file `.env`:
+
+```bash
+# Install python-dotenv
+pip install python-dotenv
+
+# Buat file .env
+echo "TWITTER_AUTH_TOKEN=your_token_here" > .env
+
+# Di kode Python Anda:
+from dotenv import load_dotenv
+load_dotenv()
 ```
 
 ## 📊 Format Output
 
-Data yang dihasilkan dalam format CSV dengan kolom:
+Data yang dihasilkan dalam format CSV dengan kolom-kolom berikut:
 
 | Kolom           | Deskripsi                          |
 | --------------- | ---------------------------------- |
-| `username`      | Nama user yang mem-posting tweet   |
+| `username`      | Nama user yang memposting tweet    |
 | `handle`        | Handle Twitter (@username)         |
-| `timestamp`     | Waktu tweet diposting (ISO format) |
+| `timestamp`     | Waktu tweet diposting (format ISO) |
 | `tweet_text`    | Isi konten tweet                   |
-| `url`           | URL lengkap tweet                  |
+| `url`           | URL lengkap ke tweet               |
 | `reply_count`   | Jumlah replies                     |
 | `retweet_count` | Jumlah retweets                    |
 | `like_count`    | Jumlah likes                       |
 
-## ⚙️ Konfigurasi
+**Contoh output CSV:**
 
-### Parameter TwitterScraper
+```csv
+username,handle,timestamp,tweet_text,url,reply_count,retweet_count,like_count
+John Doe,@johndoe,2024-01-01T10:30:00.000Z,Python is awesome!,https://x.com/johndoe/status/...,5,10,25
+...
+```
+
+## ⚙️ Parameter & Konfigurasi
+
+### TwitterScraper Parameters
 
 ```python
 TwitterScraper(
-    auth_token=None,        # Cookie auth_token dari X.com
-    scroll_pause_time=5,    # Waktu jeda antara scroll (detik)
-    headless=True          # Mode headless browser
+    auth_token=None,        # Cookie auth_token (WAJIB)
+    scroll_pause_time=5,    # Waktu jeda antar scroll dalam detik
+    headless=True          # True = tanpa GUI, False = tampilkan browser
 )
 ```
 
-### Parameter scrape_with_date_range
+### scrape_with_date_range Parameters
 
 ```python
 scraper.scrape_with_date_range(
-    keyword="",             # Kata kunci pencarian
-    target_per_session=100, # Target tweet per sesi
-    start_date=datetime,    # Tanggal mulai
-    end_date=datetime,      # Tanggal selesai
-    interval_days=1,        # Interval hari per sesi
-    lang='id',             # Kode bahasa (id/en/dll)
-    search_type='top'      # 'top' atau 'latest'
+    keyword="",             # Kata kunci pencarian (WAJIB)
+    target_per_session=100, # Jumlah target tweet per sesi
+    start_date=datetime,    # Tanggal mulai (WAJIB)
+    end_date=datetime,      # Tanggal selesai (WAJIB)
+    interval_days=1,        # Interval hari per sesi (1 = per hari)
+    lang='id',             # Kode bahasa: 'id', 'en', 'ja', dll
+    search_type='top'      # 'top' = tweet teratas, 'latest' = terbaru
 )
 ```
 
-## 🛠️ Development
+## 💡 Tips & Tricks
 
-### Setup Development Environment
+### 1. Scraping Banyak Tweet
 
-```bash
-# Clone repository
-git clone https://github.com/yourusername/Scrapping-X.git
-cd Scrapping-X
+Untuk hasil maksimal:
 
-# Buat virtual environment
-python -m venv venv
-source venv/bin/activate  # Di Windows: venv\Scripts\activate
+- Gunakan interval kecil (1 hari) untuk dataset besar
+- Set `target_per_session` tidak terlalu tinggi (50-200)
+- Gunakan `scroll_pause_time` lebih besar (7-10 detik) untuk koneksi lambat
 
-# Install dependencies development
-pip install -e .
-```
+### 2. Menghindari Rate Limit
 
-### Build Package
+- Jangan scraping terlalu cepat
+- Gunakan `scroll_pause_time` minimal 5 detik
+- Beri jeda antar sesi scraping
+- Jangan jalankan multiple instance bersamaan
 
-```bash
-# Install build tools
-pip install build twine
+### 3. Filter Bahasa Spesifik
 
-# Build package
-python -m build
+Gunakan parameter `lang` dengan kode ISO 639-1:
 
-# Upload ke PyPI (memerlukan akun PyPI)
-python -m twine upload dist/*
-```
+- `id` - Bahasa Indonesia
+- `en` - English
+- `ja` - Japanese
+- `es` - Spanish
+- `fr` - French
+- Dan lainnya...
+
+### 4. Troubleshooting "No tweets found"
+
+Jika tidak menemukan tweet:
+
+- Periksa koneksi internet
+- Pastikan auth_token masih valid
+- Coba dengan keyword yang lebih umum
+- Periksa rentang tanggal (mungkin tidak ada tweet di periode tersebut)
 
 ## 📋 Requirements
 
-- Python 3.7+
-- Chrome/Chromium browser
-- Dependencies:
+- **Python 3.7+**
+- **Chrome/Chromium browser**
+- **Dependencies** (otomatis terinstall):
   - pandas >= 2.0.0
   - selenium >= 4.0.0
   - webdriver-manager >= 4.0.0
 
-## ⚠️ Disclaimer
+## ⚠️ Disclaimer & Legal
 
-Tool ini dibuat untuk tujuan edukasi dan penelitian. Pastikan Anda mematuhi:
+Tool ini dibuat untuk tujuan **edukasi dan penelitian**.
+
+Pastikan Anda mematuhi:
 
 - [Twitter/X Terms of Service](https://twitter.com/tos)
 - [Twitter/X Developer Agreement](https://developer.twitter.com/en/developer-terms/agreement-and-policy)
 - Kebijakan scraping dan rate limiting
 - Privasi dan hak cipta pengguna lain
 
-Penulis tidak bertanggung jawab atas penyalahgunaan tool ini.
+**Penulis tidak bertanggung jawab** atas penyalahgunaan tool ini.
 
-## 📝 License
+## 🐛 Troubleshooting
 
-MIT License - lihat file [LICENSE](LICENSE) untuk detail.
+### Error: "WebDriver not found"
+
+**Solusi:** Package otomatis download ChromeDriver, pastikan Chrome terinstall.
+
+### Error: "Auth token invalid"
+
+**Solusi:**
+
+1. Login ulang ke x.com
+2. Dapatkan auth_token baru
+3. Pastikan tidak ada spasi saat copy-paste
+
+### Error: "No tweets found"
+
+**Solusi:**
+
+- Periksa koneksi internet
+- Verifikasi auth_token masih valid
+- Coba keyword lain atau rentang tanggal berbeda
+
+### Browser tidak muncul (headless mode)
+
+Ini normal! Set `headless=False` jika ingin melihat browser:
+
+```python
+scraper = TwitterScraper(auth_token=token, headless=False)
+```
 
 ## 🤝 Contributing
 
-Kontribusi sangat diterima! Silakan:
+Kontribusi sangat diterima!
 
-1. Fork repository
-2. Buat branch fitur (`git checkout -b feature/AmazingFeature`)
+1. Fork repository ini
+2. Buat branch baru (`git checkout -b feature/AmazingFeature`)
 3. Commit perubahan (`git commit -m 'Add some AmazingFeature'`)
 4. Push ke branch (`git push origin feature/AmazingFeature`)
 5. Buat Pull Request
 
-## 💬 Support
+## 📝 License
 
-Jika Anda menemukan bug atau memiliki saran, silakan buat [issue](https://github.com/yourusername/Scrapping-X/issues).
+MIT License - lihat file [LICENSE](LICENSE) untuk detail lengkap.
+
+## 💬 Support & Contact
+
+- **GitHub Issues**: [https://github.com/Dhaniaaa/panen-tweet/issues](https://github.com/Dhaniaaa/panen-tweet/issues)
+- **PyPI Package**: [https://pypi.org/project/panen-tweet/](https://pypi.org/project/panen-tweet/)
+- **Email**: rhamadhanigb19@gmail.com
 
 ## 🙏 Acknowledgments
 
-- Menggunakan [Selenium](https://www.selenium.dev/) untuk web scraping
-- [webdriver-manager](https://github.com/SergeyPirogov/webdriver_manager) untuk manajemen ChromeDriver otomatis
-- [pandas](https://pandas.pydata.org/) untuk data processing
+- [Selenium](https://www.selenium.dev/) - Web automation framework
+- [webdriver-manager](https://github.com/SergeyPirogov/webdriver_manager) - Automatic ChromeDriver management
+- [pandas](https://pandas.pydata.org/) - Data processing
 
 ---
 
-**Made with ❤️ for the data science community**
+**Made with ❤️ for the data science & research community**
+
+⭐ Jika project ini membantu, berikan star di GitHub!

@@ -14,9 +14,9 @@ import tempfile
 import shutil
 
 # --- KONFIGURASI ---
-# SALIN DAN TEMPEL NILAI `auth_token` ANDA DI BAWAH INI.
-# JANGAN BAGIKAN SCRIPT INI DENGAN COOKIE ANDA KARENA BERSIFAT RAHASIA.
-AUTH_TOKEN_COOKIE = "cookie kalian"
+# Auth token akan diminta saat program dijalankan
+# JANGAN BAGIKAN auth_token ANDA KARENA BERSIFAT RAHASIA!
+AUTH_TOKEN_COOKIE = None  # Akan diisi dari input user
 
 # Waktu tunggu (dalam detik) antara setiap scroll agar halaman sempat memuat
 SCROLL_PAUSE_TIME = 5 # Direkomendasikan untuk menaikkan jeda untuk scraping jangka panjang
@@ -185,8 +185,29 @@ def get_user_input():
 
 def main():
     """Fungsi utama untuk menjalankan proses scraping secara berulang per interval tanggal."""
-    if not AUTH_TOKEN_COOKIE or AUTH_TOKEN_COOKIE == "Ganti dengan punya kalian":
-        print("Error: Harap isi variabel AUTH_TOKEN_COOKIE dengan nilai cookie Anda.")
+    print("="*60)
+    print("       TWITTER/X SCRAPER - PANEN TWEET")
+    print("="*60)
+    print("\nPENTING: Anda memerlukan cookie 'auth_token' dari akun Twitter/X.")
+    print("\nCara mendapatkan auth_token:")
+    print("1. Login ke x.com di browser")
+    print("2. Tekan F12 untuk membuka Developer Tools")
+    print("3. Buka tab 'Application' atau 'Storage'")
+    print("4. Di sidebar kiri, klik 'Cookies' > 'https://x.com'")
+    print("5. Cari cookie dengan nama 'auth_token'")
+    print("6. Salin nilai (value) dari cookie tersebut")
+    print("\n⚠️  JANGAN BAGIKAN TOKEN INI KEPADA SIAPAPUN!")
+    print("="*60)
+    print()
+
+    # Minta input auth token dari user
+    global AUTH_TOKEN_COOKIE
+    if not AUTH_TOKEN_COOKIE:
+        AUTH_TOKEN_COOKIE = input("Masukkan auth_token Anda: ").strip()
+
+    if not AUTH_TOKEN_COOKIE:
+        print("\n❌ Error: auth_token tidak boleh kosong!")
+        print("Silakan jalankan ulang program dan masukkan auth_token yang valid.")
         return
 
     (keyword, target_per_session, start_date, end_date,
