@@ -10,9 +10,9 @@ readme = "README.md"
 requires-python = ">=3.7"
 license = {text = "MIT"}
 authors = [
-    {name = "Ramadhani", email = "your.email@example.com"}
+    {name = "Ramadhani", email = "rhamadhanigb19@gmail..com"}
 ]
-keywords = ["twitter", "scraping", "selenium", "web-scraping", "x-scraper"]
+keywords = ["twitter", "scraping", "selenium", "web-scraping", "x-scraper","panen-tweet","x"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
@@ -33,9 +33,9 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/Dhaniaaa/Scrapping-X"
-"Bug Reports" = "https://github.com/Dhaniaaa/Scrapping-X/issues"
-Source = "https://github.com/Dhaniaaa/Scrapping-X"
+Homepage = "https://github.com/Dhaniaaa/panen-tweet"
+"Bug Reports" = "https://github.com/Dhaniaaa/panen-tweet/issues"
+Source = "https://github.com/Dhaniaaa/panen-tweet"
 
 [project.scripts]
 scrape-x = "scrape_x.cli:main"

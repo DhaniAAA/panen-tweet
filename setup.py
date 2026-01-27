@@ -12,11 +12,11 @@ setup(
     name='panen-tweet',
     version='1.0.0',
     author='Ramadhani',
-    author_email='your.email@example.com',
+    author_email='rhamadhanigb19@gmail.com',
     description='Powerful Twitter/X scraping tool dengan Selenium',
     long_description=long_description,
     long_description_content_type='text/markdown',
-    url='https://github.com/Dhaniaaa/Scrapping-X',
+    url='https://github.com/Dhaniaaa/panen-tweet',
     packages=find_packages(),
     classifiers=[
         'Development Status :: 4 - Beta',
@@ -34,12 +34,12 @@ setup(
     install_requires=requirements,
     entry_points={
         'console_scripts': [
-            'scrape-x=scrape_x.cli:main',
+            'panen-tweet=scrape_x.cli:main',
         ],
     },
     keywords='twitter scraping selenium web-scraping x-scraper',
     project_urls={
-        'Bug Reports': 'https://github.com/Dhaniaaa/Scrapping-X/issues',
-        'Source': 'https://github.com/Dhaniaaa/Scrapping-X',
+        'Bug Reports': 'https://github.com/Dhaniaaa/panen-tweet/issues',
+        'Source': 'https://github.com/Dhaniaaa/panen-tweet',
     },
 )
