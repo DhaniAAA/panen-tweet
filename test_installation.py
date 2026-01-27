@@ -5,33 +5,46 @@ Quick test script untuk memverifikasi instalasi package
 """
 
 import sys
+import shutil # Added for shutil.which
 
-def test_import():
-    """Test apakah package bisa di-import"""
-    print("🔍 Testing import...")
+def test_basic_functionality():
+    """Test basic functionality: import, class init, CLI availability"""
+    all_ok = True
+
+    print("1. Testing Import...")
     try:
-        from scrape_x import TwitterScraper
-        print("✅ Import TwitterScraper: SUCCESS")
-        return True
+        import panen_tweet
+        from panen_tweet import TwitterScraper
+        print(f"   [SUCCESS] Berhasil import panen_tweet (Version: {panen_tweet.__version__})")
+        print("   [SUCCESS] Berhasil import TwitterScraper class")
     except ImportError as e:
-        print(f"❌ Import TwitterScraper: FAILED - {e}")
+        print(f"   [FAILED] Gagal import: {e}")
         return False
 
-
-def test_class_initialization():
-    """Test apakah class bisa di-inisialisasi"""
-    print("\n🔍 Testing class initialization...")
+    # 2. Test Class Initialization
+    print("\n2. Testing Class Initialization...")
     try:
-        from scrape_x import TwitterScraper
         scraper = TwitterScraper(auth_token="test_token", headless=True)
-        print("✅ Class initialization: SUCCESS")
+        print("   [SUCCESS] Berhasil inisialisasi TwitterScraper")
         print(f"   - Auth token: {'Set' if scraper.auth_token else 'Not set'}")
         print(f"   - Headless mode: {scraper.headless}")
         print(f"   - Scroll pause time: {scraper.scroll_pause_time}s")
-        return True
     except Exception as e:
-        print(f"❌ Class initialization: FAILED - {e}")
+        print(f"   [FAILED] Gagal inisialisasi: {e}")
         return False
+
+    # 3. Test CLI Availability
+    print("\n3. Testing CLI Command...")
+    cli_command = "panen-tweet"
+    if shutil.which(cli_command):
+        print(f"   [SUCCESS] Command '{cli_command}' ditemukan di path")
+    else:
+        print(f"   [WARNING] Command '{cli_command}' tidak ditemukan (mungkin perlu restart terminal)")
+        # This is a warning, not a hard failure for the entire basic functionality test
+        # The original CLI test also didn't always return False.
+        # We'll let the overall test pass if other critical steps passed.
+
+    return all_ok
 
 
 def test_module_attributes():

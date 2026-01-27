@@ -9,7 +9,7 @@ Package untuk scraping Twitter/X menggunakan Selenium dengan fitur:
 - Export ke CSV
 
 Contoh penggunaan:
-    from scrape_x import TwitterScraper
+    from panen_tweet import TwitterScraper
 
     scraper = TwitterScraper(auth_token="your_auth_token_here")
     df = scraper.scrape_with_date_range(
@@ -27,7 +27,7 @@ Contoh penggunaan:
 """
 
 __version__ = '1.0.2'
-__author__ = 'Your Name'
+__author__ = 'Ramadhani'
 __all__ = ['TwitterScraper']
 
-from scrape_x.core import TwitterScraper
+from panen_tweet.core import TwitterScraper

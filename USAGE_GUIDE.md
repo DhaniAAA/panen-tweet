@@ -62,7 +62,7 @@ Lalu ikuti instruksi yang sama seperti Method 1.
 Untuk integrasi ke code Python Anda:
 
 ```python
-from scrape_x import TwitterScraper
+from panen_tweet import TwitterScraper
 import datetime
 
 # Setup (ganti dengan token Anda)

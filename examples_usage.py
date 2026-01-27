@@ -2,7 +2,7 @@
 Contoh penggunaan Scrape-X sebagai library Python
 """
 
-from scrape_x import TwitterScraper
+from panen_tweet import TwitterScraper
 import datetime
 
 def example_basic():

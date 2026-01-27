@@ -93,7 +93,7 @@ Program akan otomatis:
 Jika Anda ingin mengintegrasikan ke dalam kode Python Anda:
 
 ```python
-from scrape_x import TwitterScraper
+from panen_tweet import TwitterScraper
 import datetime
 import os
 

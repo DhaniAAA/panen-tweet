@@ -2,7 +2,7 @@
 Command Line Interface untuk Scrape-X
 """
 import datetime
-from scrape_x.core import TwitterScraper
+from panen_tweet.core import TwitterScraper
 
 
 def get_user_input():
