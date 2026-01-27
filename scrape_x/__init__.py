@@ -26,7 +26,7 @@ Contoh penggunaan:
         scraper.save_to_csv(df, "tweets.csv")
 """
 
-__version__ = '1.0.0'
+__version__ = '1.0.1'
 __author__ = 'Your Name'
 __all__ = ['TwitterScraper']
 

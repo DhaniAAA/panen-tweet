@@ -10,7 +10,7 @@ with open('README.md', 'r', encoding='utf-8') as f:
 
 setup(
     name='panen-tweet',
-    version='1.0.0',
+    version='1.0.1',
     author='Ramadhani',
     author_email='rhamadhanigb19@gmail.com',
     description='Powerful Twitter/X scraping tool dengan Selenium',
