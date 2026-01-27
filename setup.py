@@ -17,6 +17,7 @@ setup(
     long_description=long_description,
     long_description_content_type='text/markdown',
     url='https://github.com/Dhaniaaa/panen-tweet',
+    license='MIT',
     packages=find_packages(),
     classifiers=[
         'Development Status :: 4 - Beta',
