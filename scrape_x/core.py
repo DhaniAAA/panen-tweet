@@ -20,7 +20,7 @@ import shutil
 class TwitterScraper:
     """Kelas utama untuk scraping Twitter/X"""
 
-    def __init__(self, auth_token=None, scroll_pause_time=5, headless=True):
+    def __init__(self, auth_token=None, scroll_pause_time=5, headless=True, chrome_binary_path=None):
         """
         Inisialisasi TwitterScraper
 
@@ -28,10 +28,12 @@ class TwitterScraper:
             auth_token (str): Cookie auth_token untuk login
             scroll_pause_time (int): Waktu jeda antara scroll (dalam detik)
             headless (bool): Jalankan browser dalam mode headless
+            chrome_binary_path (str): Lokasi file executable Chrome (opsional)
         """
         self.auth_token = auth_token
         self.scroll_pause_time = scroll_pause_time
         self.headless = headless
+        self.chrome_binary_path = chrome_binary_path
         self.driver = None
         self.user_data_dir = None
 
@@ -39,6 +41,10 @@ class TwitterScraper:
         """Menyiapkan instance WebDriver untuk Chrome"""
         print("Mencoba menyiapkan WebDriver...")
         chrome_options = Options()
+
+        if self.chrome_binary_path:
+            chrome_options.binary_location = self.chrome_binary_path
+            print(f"Menggunakan binary Chrome kustom: {self.chrome_binary_path}")
 
         if self.headless:
             chrome_options.add_argument("--headless=new")
