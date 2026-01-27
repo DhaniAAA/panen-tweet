@@ -7,8 +7,6 @@ __pycache__/
 *.so
 
 # Distribution / packaging
-examples_usage.py
-*.md
 .Python
 build/
 develop-eggs/
@@ -72,3 +70,7 @@ Thumbs.db
 *.csv
 tweets_*.csv
 auth_token.txt
+.env
+.env.local
+config.ini
+*auth_token*

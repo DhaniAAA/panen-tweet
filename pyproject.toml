@@ -3,7 +3,7 @@ requires = ["setuptools>=45", "wheel", "setuptools_scm>=6.2"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "scrape-x"
+name = "panen-tweet"
 version = "1.0.0"
 description = "Powerful Twitter/X scraping tool dengan Selenium"
 readme = "README.md"
@@ -33,9 +33,9 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/yourusername/Scrapping-X"
-"Bug Reports" = "https://github.com/yourusername/Scrapping-X/issues"
-Source = "https://github.com/yourusername/Scrapping-X"
+Homepage = "https://github.com/Dhaniaaa/Scrapping-X"
+"Bug Reports" = "https://github.com/Dhaniaaa/Scrapping-X/issues"
+Source = "https://github.com/Dhaniaaa/Scrapping-X"
 
 [project.scripts]
 scrape-x = "scrape_x.cli:main"

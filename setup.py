@@ -9,14 +9,14 @@ with open('README.md', 'r', encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
-    name='scrape-x',
+    name='panen-tweet',
     version='1.0.0',
-    author='Ramadhani',  # Ganti dengan nama Anda
-    author_email='your.email@example.com',  # Ganti dengan email Anda
+    author='Ramadhani',
+    author_email='your.email@example.com',
     description='Powerful Twitter/X scraping tool dengan Selenium',
     long_description=long_description,
     long_description_content_type='text/markdown',
-    url='https://github.com/yourusername/Scrapping-X',  # Ganti dengan URL repo Anda
+    url='https://github.com/Dhaniaaa/Scrapping-X',
     packages=find_packages(),
     classifiers=[
         'Development Status :: 4 - Beta',
@@ -39,7 +39,7 @@ setup(
     },
     keywords='twitter scraping selenium web-scraping x-scraper',
     project_urls={
-        'Bug Reports': 'https://github.com/yourusername/Scrapping-X/issues',
-        'Source': 'https://github.com/yourusername/Scrapping-X',
+        'Bug Reports': 'https://github.com/Dhaniaaa/Scrapping-X/issues',
+        'Source': 'https://github.com/Dhaniaaa/Scrapping-X',
     },
 )
