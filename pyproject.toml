@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=45", "wheel", "setuptools_scm>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "scrape-x"
+version = "1.0.0"
+description = "Powerful Twitter/X scraping tool dengan Selenium"
+readme = "README.md"
+requires-python = ">=3.7"
+license = {text = "MIT"}
+authors = [
+    {name = "Ramadhani", email = "your.email@example.com"}
+]
+keywords = ["twitter", "scraping", "selenium", "web-scraping", "x-scraper"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "pandas>=2.0.0",
+    "selenium>=4.0.0",
+    "webdriver-manager>=4.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/yourusername/Scrapping-X"
+"Bug Reports" = "https://github.com/yourusername/Scrapping-X/issues"
+Source = "https://github.com/yourusername/Scrapping-X"
+
+[project.scripts]
+scrape-x = "scrape_x.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["scrape_x*"]
+exclude = ["tests*"]

@@ -1,113 +1,256 @@
-# X / Twitter Scraper with Selenium
-This Python script is designed to scrape tweets from the X platform (formerly Twitter) based on search keywords. The script uses Selenium to automate the browser and mimic user behavior, so it does not require official X API access.
+# Scrape-X 🐦
 
-To bypass the frequently appearing login page, this script uses the authentication cookie injection method `(auth_token)`.
+[![Python 3.7+](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-# ✨ Features
-* Keyword-Based Search: Retrieves tweets based on any search query.
-* Login with Cookies: Bypasses the X login page by injecting your auth_token, making the scraping process more reliable.
-* Automatic Scrolling: Automatically scrolls down to load more tweets.
-* Export to CSV: Saves all successfully retrieved data into a neat .csv file containing columns: `username`, `handle`, `timestamp`, `tweet_text`, `url`, `reply_count`, `retweet_count`, and `like_count`.
-* Compatible with Google Colab: Includes a guide for running in the Google Colab environment.
+**Scrape-X** adalah tool powerful untuk scraping Twitter/X menggunakan Selenium. Tool ini memungkinkan Anda mengekstrak tweet berdasarkan kata kunci, rentang tanggal, bahasa, dan jenis tweet (teratas/terbaru).
 
-# ⚙️ Requirements
-- Python 3.8 or newer.
-- Google Chrome browser installed on your computer (unless using Google Colab). `pip` for Python package installation.
+## ✨ Fitur
 
-# 🚀 Installation & Preparation
+- 🔍 **Pencarian Fleksibel**: Cari tweet berdasarkan kata kunci
+- 📅 **Filter Tanggal**: Tentukan rentang tanggal yang spesifik
+- 🌍 **Multi-bahasa**: Support untuk filter bahasa
+- 🔝 **Jenis Tweet**: Pilih antara tweet teratas atau terbaru
+- 📊 **Export CSV**: Simpan hasil dalam format CSV
+- 🔄 **Scraping Bertahap**: Scraping otomatis dengan interval untuk menghindari rate limit
+- 🤖 **Headless Mode**: Jalankan browser tanpa GUI
 
-Clone This Repository 
-```bash
-https://github.com/DhaniAAA/Scrapping-X.git
-cd YOUR_REPO_NAME
-```
+## 📦 Instalasi
 
-Install Required Python Packages
-Open the terminal or command prompt in the project folder, then run the following command:
-```bash
-pip install -r requirements.txt
-```
-(Ensure you create a `requirements.txt` file containing `pandas`, `selenium`, and `webdriver-manager`)
-
-# 📝 How to Use
-The process of using this script consists of three main steps:
-
-Step 1: Obtain Your `auth_token` Cookie
-This is the most important step to ensure the script can “log in” to X.
-
-1. Open X.com in your browser: Use Google Chrome, open x.com, and log in to your account.
-2. Developer Tools: Press F12 on your keyboard or right-click anywhere and select Inspect.
-3. Find the cookie: 
-   - In the Developer Tools panel, click the Application tab.
-   - In the left menu, under “Storage,” open Cookies -> https://x.com.
-   - Look for the cookie with the exact name auth_token.
-4. Copy the Value: Click on the auth_token row and copy the entire long text in the “Cookie Value” column.
-
-**STRONG WARNING**: Your auth_token value is **SECRET**, just like a password. Anyone who has it can gain access to your X account. NEVER share your code or files with anyone if this token is still in them.
-
-Step 2: Configure the Script
-
-Open the `Scrapping_x.py` file (or your main file name) and change the variable values at the top:
-```bash
-# --- CONFIGURATION ---
-# 1. PASTE YOUR `auth_token` VALUE HERE
-AUTH_TOKEN_COOKIE = “paste_your_auth_token_value_here”
-```
-
-Step 3: Run the Script
-Return to your terminal or command prompt: 
-1. Return to your terminal or command prompt, then run the script:
-```bash
-python Scrapping_x.py
-```
-2. The script will prompt you to enter search details one by one. Example:
-```bash
-#English
-1. Enter the keyword/search topic: anies
-2. What is the MAXIMUM number of tweets you want to retrieve PER SESSION? 100
-3. Enter the OVERALL START DATE (YYYY-MM-DD): 2025-05-01
-4. Enter the OVERALL END DATE (YYYY-MM-DD): 2025-06-01
-5. How many days should the scraping session interval be? (e.g., 1 for per day): 3
-6. Enter the language code (e.g., 'id' for Indonesian, 'en' for English): id
-7. Select the tweet type (1 for Top, 2 for Newest): 1
-
-#Indonesia
-1. Masukkan kata kunci/topik pencarian: anies
-2. Berapa jumlah MAKSIMAL tweet yang ingin diambil PER SESI? 100
-3. Masukkan TANGGAL MULAI KESELURUHAN (YYYY-MM-DD): 2025-05-01
-4. Masukkan TANGGAL SELESAI KESELURUHAN (YYYY-MM-DD): 2025-06-01
-5. Berapa hari interval per sesi scraping? (misal: 1 untuk per hari): 3
-6. Masukkan kode bahasa (misal: 'id' untuk Indonesia, 'en' untuk Inggris): id
-7. Pilih jenis tweet (1 untuk Top, 2 untuk Terbaru): 1
-```
-
-3. After you have filled in all the inputs, the script will start the scraping process. If successful, you will find a `.csv` file (example: `tweets_AniesBaswedan.csv`) in the same folder.
-The script will start the process, and if successful, you will find a `tweets_(your search).csv` file in the same folder.
-
-# ☁️ Usage in Google Colab
-If you are using Google Colab, you need to run some installation commands in the first cell before running the main script. Cell
-
-# 1. Installing Dependencies# Install Python libraries
+### Instalasi dari Source (Development)
 
 ```bash
-!pip install selenium pandas webdriver-manager
+# Clone repository
+git clone https://github.com/yourusername/Scrapping-X.git
+cd Scrapping-X
+
+# Install dalam mode development
+pip install -e .
 ```
-# Download and install Google Chrome for the Colab environment
+
+### Instalasi dari PyPI (Setelah publish)
+
 ```bash
-# Install required Python libraries
-!pip install selenium pandas webdriver-manager
-
-# Download and install Google Chrome
-!wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-!dpkg -i google-chrome-stable_current_amd64.deb
-
-# If there are dependency errors, run this command to fix them
-!apt-get install -f
+pip install scrape-x
 ```
-# 2: Run the Scraper Script 
-Once the above cell is complete, you can run the cell containing your Python scraper code. Make sure you have filled in `AUTH_TOKEN_COOKIE` in the code. The script is configured to run in a server environment such as Colab.
 
-⚠️ Disclaimer for this script. 
-- This script is created for educational and research purposes. Use it wisely and ethically.
-- Platform X actively prevents scraping. This script may stop working at any time if X changes the HTML structure of its site. If that happens, the XPath selectors in the code may need to be updated.
-- Excessive scraping may result in your account being temporarily restricted or blocked.
+### Instalasi Manual dari ZIP
+
+```bash
+# Download dan extract ZIP, lalu:
+cd Scrapping-X
+pip install .
+```
+
+## 🚀 Cara Penggunaan
+
+### 1. Dapatkan Auth Token
+
+Sebelum menggunakan, Anda perlu mendapatkan cookie `auth_token` dari akun Twitter/X Anda:
+
+1. Login ke [x.com](https://x.com)
+2. Buka Developer Tools (tekan `F12`)
+3. Pergi ke tab **Application** > **Storage** > **Cookies** > `https://x.com`
+4. Cari cookie dengan nama `auth_token`
+5. Salin nilai (value) dari cookie tersebut
+
+⚠️ **PENTING**: Jangan bagikan `auth_token` Anda kepada siapapun!
+
+### 2. Menggunakan Command Line Interface (CLI)
+
+Setelah instalasi, Anda bisa langsung menggunakan command `scrape-x`:
+
+```bash
+scrape-x
+```
+
+Anda akan diminta memasukkan:
+
+- Auth token
+- Kata kunci pencarian
+- Jumlah tweet per sesi
+- Tanggal mulai dan selesai
+- Interval scraping
+- Kode bahasa
+- Jenis tweet (Top/Latest)
+
+### 3. Menggunakan sebagai Library Python
+
+#### Contoh Basic:
+
+```python
+from scrape_x import TwitterScraper
+import datetime
+
+# Inisialisasi scraper
+scraper = TwitterScraper(
+    auth_token="your_auth_token_here",
+    scroll_pause_time=5,
+    headless=True
+)
+
+# Scraping dengan rentang tanggal
+df = scraper.scrape_with_date_range(
+    keyword="python programming",
+    target_per_session=100,
+    start_date=datetime.datetime(2024, 1, 1),
+    end_date=datetime.datetime(2024, 1, 7),
+    interval_days=1,
+    lang='en',
+    search_type='latest'
+)
+
+# Simpan hasil
+if df is not None:
+    scraper.save_to_csv(df, "tweets_python.csv")
+    print(f"Berhasil mengambil {len(df)} tweets!")
+```
+
+#### Contoh Advanced dengan Custom Configuration:
+
+```python
+from scrape_x import TwitterScraper
+import datetime
+
+# Inisialisasi dengan konfigurasi custom
+scraper = TwitterScraper(
+    auth_token="your_auth_token",
+    scroll_pause_time=3,  # Pause lebih cepat
+    headless=False  # Tampilkan browser
+)
+
+# Setup driver manual
+if scraper.setup_driver():
+    scraper.login()
+
+    # Scraping manual
+    tweets = scraper.scrape_tweets(
+        query="machine%20learning%20lang%3Aen",
+        target_count=50,
+        search_type='top'
+    )
+
+    print(f"Ditemukan {len(tweets)} tweets")
+
+    # Cleanup
+    scraper.quit()
+```
+
+## 📊 Format Output
+
+Data yang dihasilkan dalam format CSV dengan kolom:
+
+| Kolom           | Deskripsi                          |
+| --------------- | ---------------------------------- |
+| `username`      | Nama user yang mem-posting tweet   |
+| `handle`        | Handle Twitter (@username)         |
+| `timestamp`     | Waktu tweet diposting (ISO format) |
+| `tweet_text`    | Isi konten tweet                   |
+| `url`           | URL lengkap tweet                  |
+| `reply_count`   | Jumlah replies                     |
+| `retweet_count` | Jumlah retweets                    |
+| `like_count`    | Jumlah likes                       |
+
+## ⚙️ Konfigurasi
+
+### Parameter TwitterScraper
+
+```python
+TwitterScraper(
+    auth_token=None,        # Cookie auth_token dari X.com
+    scroll_pause_time=5,    # Waktu jeda antara scroll (detik)
+    headless=True          # Mode headless browser
+)
+```
+
+### Parameter scrape_with_date_range
+
+```python
+scraper.scrape_with_date_range(
+    keyword="",             # Kata kunci pencarian
+    target_per_session=100, # Target tweet per sesi
+    start_date=datetime,    # Tanggal mulai
+    end_date=datetime,      # Tanggal selesai
+    interval_days=1,        # Interval hari per sesi
+    lang='id',             # Kode bahasa (id/en/dll)
+    search_type='top'      # 'top' atau 'latest'
+)
+```
+
+## 🛠️ Development
+
+### Setup Development Environment
+
+```bash
+# Clone repository
+git clone https://github.com/yourusername/Scrapping-X.git
+cd Scrapping-X
+
+# Buat virtual environment
+python -m venv venv
+source venv/bin/activate  # Di Windows: venv\Scripts\activate
+
+# Install dependencies development
+pip install -e .
+```
+
+### Build Package
+
+```bash
+# Install build tools
+pip install build twine
+
+# Build package
+python -m build
+
+# Upload ke PyPI (memerlukan akun PyPI)
+python -m twine upload dist/*
+```
+
+## 📋 Requirements
+
+- Python 3.7+
+- Chrome/Chromium browser
+- Dependencies:
+  - pandas >= 2.0.0
+  - selenium >= 4.0.0
+  - webdriver-manager >= 4.0.0
+
+## ⚠️ Disclaimer
+
+Tool ini dibuat untuk tujuan edukasi dan penelitian. Pastikan Anda mematuhi:
+
+- [Twitter/X Terms of Service](https://twitter.com/tos)
+- [Twitter/X Developer Agreement](https://developer.twitter.com/en/developer-terms/agreement-and-policy)
+- Kebijakan scraping dan rate limiting
+- Privasi dan hak cipta pengguna lain
+
+Penulis tidak bertanggung jawab atas penyalahgunaan tool ini.
+
+## 📝 License
+
+MIT License - lihat file [LICENSE](LICENSE) untuk detail.
+
+## 🤝 Contributing
+
+Kontribusi sangat diterima! Silakan:
+
+1. Fork repository
+2. Buat branch fitur (`git checkout -b feature/AmazingFeature`)
+3. Commit perubahan (`git commit -m 'Add some AmazingFeature'`)
+4. Push ke branch (`git push origin feature/AmazingFeature`)
+5. Buat Pull Request
+
+## 💬 Support
+
+Jika Anda menemukan bug atau memiliki saran, silakan buat [issue](https://github.com/yourusername/Scrapping-X/issues).
+
+## 🙏 Acknowledgments
+
+- Menggunakan [Selenium](https://www.selenium.dev/) untuk web scraping
+- [webdriver-manager](https://github.com/SergeyPirogov/webdriver_manager) untuk manajemen ChromeDriver otomatis
+- [pandas](https://pandas.pydata.org/) untuk data processing
+
+---
+
+**Made with ❤️ for the data science community**
