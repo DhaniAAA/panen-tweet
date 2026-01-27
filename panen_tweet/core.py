@@ -212,32 +212,39 @@ class TwitterScraper:
             current_date = start_date
 
             # Loop utama untuk scraping per interval
-            while current_date <= end_date:
-                chunk_end_date = current_date + datetime.timedelta(days=interval_days)
+            try:
+                while current_date <= end_date:
+                    chunk_end_date = current_date + datetime.timedelta(days=interval_days)
 
-                since_str = current_date.strftime('%Y-%m-%d')
-                until_str = chunk_end_date.strftime('%Y-%m-%d')
+                    since_str = current_date.strftime('%Y-%m-%d')
+                    until_str = chunk_end_date.strftime('%Y-%m-%d')
 
-                print("\n" + "="*50)
-                print(f"--- MEMULAI SESI UNTUK TANGGAL: {since_str} hingga {until_str} ---")
-                print("="*50)
+                    print("\n" + "="*50)
+                    print(f"--- MEMULAI SESI UNTUK TANGGAL: {since_str} hingga {until_str} ---")
+                    print("="*50)
 
-                search_query_raw = f"{keyword} lang:{lang} until:{until_str} since:{since_str}"
-                search_query = quote(search_query_raw)
+                    search_query_raw = f"{keyword} lang:{lang} until:{until_str} since:{since_str}"
+                    search_query = quote(search_query_raw)
 
-                session_data = self.scrape_tweets(search_query, target_per_session, search_type)
+                    session_data = self.scrape_tweets(search_query, target_per_session, search_type)
 
-                if session_data:
-                    all_scraped_data.extend(session_data)
+                    if session_data:
+                        all_scraped_data.extend(session_data)
 
-                print(f"\nSesi untuk {since_str} - {until_str} selesai.")
-                print(f"Total tweet terkumpul sejauh ini: {len(all_scraped_data)}")
+                    print(f"\nSesi untuk {since_str} - {until_str} selesai.")
+                    print(f"Total tweet terkumpul sejauh ini: {len(all_scraped_data)}")
 
-                current_date = chunk_end_date
+                    current_date = chunk_end_date
 
-                if current_date <= end_date:
-                    print("Memberi jeda 10 detik sebelum sesi berikutnya...")
-                    time.sleep(10)
+                    if current_date <= end_date:
+                        print("Memberi jeda 10 detik sebelum sesi berikutnya...")
+                        time.sleep(10)
+            except KeyboardInterrupt:
+                print("\n\n⚠️  PROSES DIHENTIKAN OLEH PENGGUNA (CTRL+C)!")
+                print("🛑 Menghentikan sisa antrian scraping...")
+                print("💾 Memproses dan menyimpan data yang sudah terkumpul sejauh ini...")
+                # Kita tidak raise error lagi, tapi membiarkan flow lanjut ke bawah
+                # untuk menyimpan data yang ada di all_scraped_data
 
             # Proses setelah semua sesi selesai
             if not all_scraped_data:

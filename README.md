@@ -127,8 +127,8 @@ scraper = TwitterScraper(
 df = scraper.scrape_with_date_range(
     keyword="python programming",
     target_per_session=100,      # 100 tweets per sesi
-    start_date=datetime.datetime(2024, 1, 1),
-    end_date=datetime.datetime(2024, 1, 7),
+    start_date=datetime.datetime(2024, 1, 1), # Format: YYYY-MM-DD
+    end_date=datetime.datetime(2024, 1, 7),   # Format: YYYY-MM-DD
     interval_days=1,             # Scraping per hari
     lang='en',                   # Bahasa English
     search_type='latest'         # 'top' atau 'latest'
@@ -220,17 +220,17 @@ TwitterScraper(
 
 ### scrape_with_date_range Parameters
 
-```python
 scraper.scrape_with_date_range(
-    keyword="",             # Kata kunci pencarian (WAJIB)
-    target_per_session=100, # Jumlah target tweet per sesi
-    start_date=datetime,    # Tanggal mulai (WAJIB)
-    end_date=datetime,      # Tanggal selesai (WAJIB)
-    interval_days=1,        # Interval hari per sesi (1 = per hari)
-    lang='id',             # Kode bahasa: 'id', 'en', 'ja', dll
-    search_type='top'      # 'top' = tweet teratas, 'latest' = terbaru
+keyword="", # Kata kunci pencarian (WAJIB)
+target_per_session=100, # Jumlah target tweet per sesi
+start_date=datetime, # Tanggal mulai (WAJIB) YYYY-MM-DD
+end_date=datetime, # Tanggal selesai (WAJIB) YYYY-MM-DD
+interval_days=1, # Interval hari per sesi (1 = per hari)
+lang='id', # Kode bahasa: 'id', 'en', 'ja', dll
+search_type='top' # 'top' = tweet teratas, 'latest' = terbaru
 )
-```
+
+````
 
 ## 💡 Tips & Tricks
 
@@ -319,7 +319,7 @@ Ini normal! Set `headless=False` jika ingin melihat browser:
 
 ```python
 scraper = TwitterScraper(auth_token=token, headless=False)
-```
+````
 
 ## 🤝 Contributing
 
