@@ -43,3 +43,9 @@ panen-tweet = "panen_tweet.cli:main"
 where = ["."]
 include = ["panen_tweet*"]
 exclude = ["tests*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]

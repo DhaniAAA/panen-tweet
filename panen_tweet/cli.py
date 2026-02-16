@@ -140,6 +140,27 @@ def main():
     (keyword, target_per_session, start_date, end_date,
      interval, lang, search_type) = get_user_input()
 
+    # Opsi Tambahan
+    print("\n--- Opsi Tambahan ---")
+    resume_input = input("Aktifkan Auto-Resume jika terputus? (y/n, default n): ").lower()
+    resume = resume_input == 'y'
+
+    media_input = input("Download media (gambar)? (y/n, default n): ").lower()
+    download_media = media_input == 'y'
+
+    media_dir = "media"
+    if download_media:
+        media_dir_input = input("Nama folder untuk media (default 'media'): ")
+        if media_dir_input.strip():
+            media_dir = media_dir_input.strip()
+
+    # Generate filename lebih awal
+    safe_keyword = "".join(c for c in keyword if c.isalnum())
+    start_str = start_date.strftime('%Y%m%d')
+    end_str = end_date.strftime('%Y%m%d')
+    output_filename = f"tweets_{safe_keyword}_{search_type}_{start_str}-{end_str}.csv"
+
+
     # Inisialisasi scraper
     scraper = TwitterScraper(auth_token=auth_token, scroll_pause_time=5, headless=True)
 
@@ -151,18 +172,20 @@ def main():
         end_date=end_date,
         interval_days=interval,
         lang=lang,
-        search_type=search_type
+        search_type=search_type,
+        resume=resume,
+        output_filename=output_filename,
+        download_media=download_media,
+        media_dir=media_dir
     )
 
+
     if df is not None:
-        # Generate filename
-        safe_keyword = "".join(c for c in keyword if c.isalnum())
-        output_filename = f"tweets_{safe_keyword}_{search_type}_{start_date.strftime('%Y%m%d')}-{end_date.strftime('%Y%m%d')}.csv"
-
-        # Simpan ke CSV
-        scraper.save_to_csv(df, output_filename)
-
         print("\n--- PROSES SELESAI ---")
+        print(f"Data telah tersimpan di: {output_filename}")
+        if resume:
+            print("(Mode Resume: Data baru ditambahkan ke file tersebut)")
+
         print(f"Total tweet unik yang berhasil diambil: {len(df)}")
         print("\nContoh data:")
         print(df.head())
