@@ -3,6 +3,7 @@
 [![PyPI version](https://badge.fury.io/py/panen-tweet.svg)](https://pypi.org/project/panen-tweet/)
 [![Python 3.7+](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Changelog](https://img.shields.io/badge/Changelog-v1.1.0-orange)](CHANGELOG.md)
 
 **Panen Tweet** adalah tool powerful untuk scraping Twitter/X menggunakan Selenium. Dengan tool ini, Anda dapat mengekstrak tweet berdasarkan kata kunci, rentang tanggal, bahasa, dan jenis tweet (teratas/terbaru) dengan mudah.
 
