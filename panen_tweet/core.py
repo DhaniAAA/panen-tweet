@@ -15,6 +15,8 @@ from webdriver_manager.chrome import ChromeDriverManager
 import datetime
 import tempfile
 import shutil
+import requests
+import os
 
 
 class TwitterScraper:
@@ -97,6 +99,35 @@ class TwitterScraper:
         print("Cookie berhasil disuntikkan.")
         return True
 
+        return True
+
+    def download_media(self, media_url, output_folder):
+        """
+        Download media dari URL ke folder tujuan
+        """
+        if not media_url:
+            return None
+
+        try:
+            if not os.path.exists(output_folder):
+                os.makedirs(output_folder)
+
+            # Simple filename from URL
+            filename = os.path.join(output_folder, os.path.basename(media_url.split('?')[0]))
+
+            if os.path.exists(filename):
+                return filename
+
+            response = requests.get(media_url, stream=True, timeout=10)
+            if response.status_code == 200:
+                with open(filename, 'wb') as f:
+                    for chunk in response.iter_content(1024):
+                        f.write(chunk)
+                return filename
+        except Exception as e:
+            print(f"Gagal mengunduh media {media_url}: {str(e)}")
+            return None
+
     def scrape_tweets(self, query, target_count, search_type='top'):
         """
         Mengekstrak data tweet dari halaman pencarian
@@ -160,8 +191,30 @@ class TwitterScraper:
                             "url": tweet_url,
                             "reply_count": reply_count,
                             "retweet_count": retweet_count,
-                            "like_count": like_count
+                            "like_count": like_count,
+                            "media_urls": []
                         }
+
+                        # Extract Media URLs (Images)
+                        try:
+                            media_elements = tweet.find_elements(By.XPATH, ".//div[@data-testid='tweetPhoto']//img")
+                            for el in media_elements:
+                                src = el.get_attribute('src')
+                                if src and src not in tweets_data[tweet_url]["media_urls"]:
+                                    tweets_data[tweet_url]["media_urls"].append(src)
+                        except:
+                            pass
+
+                        # Extract Video Thumbnails (simple approach)
+                        try:
+                            video_elements = tweet.find_elements(By.XPATH, ".//div[@data-testid='videoPlayer']//video")
+                            for el in video_elements:
+                                poster = el.get_attribute('poster')
+                                if poster and poster not in tweets_data[tweet_url]["media_urls"]:
+                                    tweets_data[tweet_url]["media_urls"].append(poster)
+                        except:
+                            pass
+
                 except Exception:
                     continue
 
@@ -186,7 +239,10 @@ class TwitterScraper:
         return list(tweets_data.values())[:target_count]
 
     def scrape_with_date_range(self, keyword, target_per_session, start_date, end_date,
-                                interval_days, lang='id', search_type='top'):
+                                interval_days, lang='id', search_type='top',
+                                resume=False, output_filename='scraped_data.csv',
+                                download_media=False, media_dir='media'):
+
         """
         Scraping tweet dengan rentang tanggal dan interval
 
@@ -208,8 +264,30 @@ class TwitterScraper:
         try:
             self.login()
 
+            self.login()
+
             all_scraped_data = []
             current_date = start_date
+
+            # Auto-Resume Logic
+            if resume and os.path.exists(output_filename):
+                try:
+                    print(f"Mengecek file existing untuk resume: {output_filename}")
+                    df_existing = pd.read_csv(output_filename)
+                    if not df_existing.empty and 'timestamp' in df_existing.columns:
+                        # Convert to datetime to find max
+                        df_existing['timestamp'] = pd.to_datetime(df_existing['timestamp'])
+                        last_date_scraped = df_existing['timestamp'].max()
+
+                        if pd.notna(last_date_scraped):
+                            # Start from next day of last scraped date
+                            next_start_date = last_date_scraped.date() + datetime.timedelta(days=1)
+                            if next_start_date > current_date.date(): # Assuming start_date input is datetime
+                                print(f"Resuming scraping dari tanggal: {next_start_date}")
+                                # Adjust current_date to next_start_date (keeping time if needed, but usually 00:00)
+                                current_date = datetime.datetime.combine(next_start_date, datetime.time.min)
+                except Exception as e:
+                    print(f"Gagal melakukan resume otomatis: {str(e)}")
 
             # Loop utama untuk scraping per interval
             try:
@@ -230,6 +308,27 @@ class TwitterScraper:
 
                     if session_data:
                         all_scraped_data.extend(session_data)
+
+                        # Incremental Save & Media Download
+                        if output_filename:
+                            df_session = pd.DataFrame(session_data)
+                            # Convert list to string for CSV
+                            if 'media_urls' in df_session.columns:
+                                df_session['media_urls'] = df_session['media_urls'].apply(lambda x: ';'.join(x) if isinstance(x, list) else x)
+
+                            header = not os.path.exists(output_filename)
+                            # Determine mode: 'a' if appending, 'w' if new file
+                            mode = 'a' if os.path.exists(output_filename) else 'w'
+
+                            df_session.to_csv(output_filename, mode=mode, header=header, index=False, encoding='utf-8-sig')
+                            print(f"Saved {len(session_data)} tweets to {output_filename} (Incremental)")
+
+                        if download_media:
+                            print(f"Downloading media for {len(session_data)} tweets...")
+                            for tweet in session_data:
+                                for url in tweet.get('media_urls', []):
+                                    if url:
+                                        self.download_media(url, media_dir)
 
                     print(f"\nSesi untuk {since_str} - {until_str} selesai.")
                     print(f"Total tweet terkumpul sejauh ini: {len(all_scraped_data)}")
