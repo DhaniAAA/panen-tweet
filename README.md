@@ -416,7 +416,7 @@ MIT License — lihat file [LICENSE](LICENSE) untuk detail lengkap.
 
 - **Laporkan Bug**: [GitHub Issues](https://github.com/Dhaniaaa/panen-tweet/issues)
 - **PyPI Package**: [pypi.org/project/panen-tweet](https://pypi.org/project/panen-tweet/)
-- **Email**: rhamadhanigb19@gmail.com
+- **Email**: ramadhanigb19@gmail.com
 
 ---
 
