@@ -113,16 +113,16 @@ panen-tweet
 
 The program will guide you interactively. You will be asked to enter:
 
-| No. | Question | Example Input |
-| --- | --- | --- |
-| 1 | Auth token | _(paste token from browser)_ |
-| 2 | Search keyword/topic | `jakarta flood` |
-| 3 | Max tweets per session | `100` |
-| 4 | Start date | `2024-01-01` |
-| 5 | End date | `2024-01-07` |
-| 6 | Interval days per session | `1` _(1 = per day)_ |
-| 7 | Language code | `id` _(Indonesian)_, `en` _(English)_, or leave blank for all |
-| 8 | Tweet type | `1` _(Top)_ or `2` _(Latest)_ |
+| No. | Question                  | Example Input                                                 |
+| --- | ------------------------- | ------------------------------------------------------------- |
+| 1   | Auth token                | _(paste token from browser)_                                  |
+| 2   | Search keyword/topic      | `jakarta flood`                                               |
+| 3   | Max tweets per session    | `100`                                                         |
+| 4   | Start date                | `2024-01-01`                                                  |
+| 5   | End date                  | `2024-01-07`                                                  |
+| 6   | Interval days per session | `1` _(1 = per day)_                                           |
+| 7   | Language code             | `id` _(Indonesian)_, `en` _(English)_, or leave blank for all |
+| 8   | Tweet type                | `1` _(Top)_ or `2` _(Latest)_                                 |
 
 **Example terminal output:**
 
@@ -156,7 +156,10 @@ import os
 
 # ✅ Safe way: read token from environment variable
 # Run this in terminal first: export TWITTER_AUTH_TOKEN="yourtoken"
-auth_token = os.getenv('TWITTER_AUTH_TOKEN')
+
+# ⚠️ DO NOT replace 'TWITTER_AUTH_TOKEN' below with your actual token!
+# os.getenv() looks for the variable NAME, not the value.
+auth_token = "TWITTER_AUTH_TOKEN"
 
 if not auth_token:
     raise ValueError("Token is not set! See SECURITY.md for instructions.")
@@ -240,16 +243,16 @@ panen-tweet
 
 Scraping results are automatically saved in CSV format with the following columns:
 
-| Column | Description |
-| --- | --- |
-| `username` | Display name of the user |
-| `handle` | Twitter account name (`@username`) |
-| `timestamp` | Time the tweet was posted (ISO 8601 format) |
-| `tweet_text` | Text content of the tweet |
-| `url` | Direct link to the tweet |
-| `reply_count` | Number of replies |
-| `retweet_count` | Number of retweets |
-| `like_count` | Number of likes |
+| Column          | Description                                 |
+| --------------- | ------------------------------------------- |
+| `username`      | Display name of the user                    |
+| `handle`        | Twitter account name (`@username`)          |
+| `timestamp`     | Time the tweet was posted (ISO 8601 format) |
+| `tweet_text`    | Text content of the tweet                   |
+| `url`           | Direct link to the tweet                    |
+| `reply_count`   | Number of replies                           |
+| `retweet_count` | Number of retweets                          |
+| `like_count`    | Number of likes                             |
 
 **Example CSV content:**
 
@@ -306,14 +309,14 @@ Rate limits mean Twitter/X restricts access because scraping is too fast.
 
 ### Available Language Codes
 
-| Code | Language |
-| --- | --- |
+| Code | Language   |
+| ---- | ---------- |
 | `id` | Indonesian |
-| `en` | English |
-| `ja` | Japanese |
-| `es` | Spanish |
-| `fr` | French |
-| `ko` | Korean |
+| `en` | English    |
+| `ja` | Japanese   |
+| `es` | Spanish    |
+| `fr` | French     |
+| `ko` | Korean     |
 
 ---
 
