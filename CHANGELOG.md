@@ -1,24 +1,30 @@
 # Changelog
 
-Semua perubahan penting pada project ini akan didokumentasikan di file ini.
+All notable changes to this project will be documented in this file.
+
+## [1.1.1] - 2026-06-15
+
+### Changed
+
+- **Language Parameter**: Made the `lang` parameter optional in searches. Users can now search across all languages without being restricted to a default language.
 
 ## [1.1.0] - 2026-02-16
 
 ### Added
 
-- **Auto-Resume**: Fitur untuk melanjutkan scraping dari tanggal terakhir jika terputus, tanpa duplikasi data.
-- **Media Downloader**: Opsi untuk mendownload gambar dan video thumbnail dari tweet secara otomatis.
-- **Improved CLI**: Antarmuka command-line yang lebih interaktif dengan opsi resume dan media download.
+- **Auto-Resume**: Feature to resume scraping from the last scraped date if interrupted, preventing data duplication.
+- **Media Downloader**: Option to automatically download images and video thumbnails from tweets.
+- **Improved CLI**: A more interactive command-line interface with options for resume and media download.
 
 ### Fixed
 
-- Perbaikan logika penyimpanan file CSV untuk mendukung mode _append_ (menambahkan data baru ke file lama).
+- Fixed CSV saving logic to support _append_ mode (adding new data to an existing file).
 
 ## [1.0.5] - 2026-02-14
 
 ### Added
 
-- Rilis stabil pertama di PyPI.
-- Fitur dasar scraping berdasarkan query, rentang tanggal, dan jenis tweet (Top/Latest).
-- Dukungan untuk output CSV.
-- Otomatisasi instalasi Chrome Driver via `webdriver-manager`.
+- First stable release on PyPI.
+- Basic features for scraping based on query, date range, and tweet type (Top/Latest).
+- Support for CSV output.
+- Automated installation of Chrome Driver via `webdriver-manager`.

@@ -27,6 +27,7 @@ share/python-wheels/
 *.egg
 MANIFEST
 Token.md
+GIT_FLOW.md
 # PyInstaller
 *.manifest
 *.spec

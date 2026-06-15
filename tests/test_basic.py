@@ -174,6 +174,56 @@ class TestScrapeWithDateRange:
         assert result is not None
         assert isinstance(result, pd.DataFrame)
 
+    @patch('panen_tweet.core.webdriver.Chrome')
+    @patch('panen_tweet.core.ChromeDriverManager')
+    @patch.object(TwitterScraper, 'login')
+    @patch.object(TwitterScraper, 'scrape_tweets')
+    @patch.object(TwitterScraper, 'quit')
+    def test_scrape_with_date_range_lang_query(
+        self, mock_quit, mock_scrape, mock_login, mock_chrome_mgr, mock_chrome, scraper
+    ):
+        """Test URL query construction with and without lang parameter"""
+        import datetime
+        from urllib.parse import unquote
+        
+        mock_chrome_mgr.return_value.install.return_value = "/path/to/chromedriver"
+        mock_chrome.return_value = MagicMock()
+        scraper.driver = mock_chrome.return_value
+        
+        # Mock returns empty to finish early
+        mock_scrape.return_value = []
+        
+        # 1. Test without lang (lang=None)
+        scraper.scrape_with_date_range(
+            keyword="jokowi",
+            target_per_session=10,
+            start_date=datetime.datetime(2024, 1, 1),
+            end_date=datetime.datetime(2024, 1, 1),
+            interval_days=1,
+            lang=None
+        )
+        
+        # Check arguments passed to scrape_tweets
+        called_args = mock_scrape.call_args[0]
+        query_passed = unquote(called_args[0])
+        assert "lang:" not in query_passed
+        assert "jokowi until:2024-01-02 since:2024-01-01" == query_passed
+
+        # 2. Test with lang='id'
+        scraper.scrape_with_date_range(
+            keyword="jokowi",
+            target_per_session=10,
+            start_date=datetime.datetime(2024, 1, 1),
+            end_date=datetime.datetime(2024, 1, 1),
+            interval_days=1,
+            lang='id'
+        )
+        
+        called_args = mock_scrape.call_args[0]
+        query_passed = unquote(called_args[0])
+        assert "lang:id" in query_passed
+        assert "jokowi lang:id until:2024-01-02 since:2024-01-01" == query_passed
+
 
 class TestUtilities:
     """Test untuk utility functions"""

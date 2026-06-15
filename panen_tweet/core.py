@@ -239,7 +239,7 @@ class TwitterScraper:
         return list(tweets_data.values())[:target_count]
 
     def scrape_with_date_range(self, keyword, target_per_session, start_date, end_date,
-                                interval_days, lang='id', search_type='top',
+                                interval_days, lang=None, search_type='top',
                                 resume=False, output_filename='scraped_data.csv',
                                 download_media=False, media_dir='media'):
 
@@ -252,7 +252,7 @@ class TwitterScraper:
             start_date (datetime): Tanggal mulai
             end_date (datetime): Tanggal selesai
             interval_days (int): Interval hari per sesi
-            lang (str): Kode bahasa (misal: 'id', 'en')
+            lang (str, optional): Kode bahasa (misal: 'id', 'en'). Jika kosong/None, mencari semua bahasa.
             search_type (str): 'top' atau 'latest'
 
         Returns:
@@ -301,7 +301,8 @@ class TwitterScraper:
                     print(f"--- MEMULAI SESI UNTUK TANGGAL: {since_str} hingga {until_str} ---")
                     print("="*50)
 
-                    search_query_raw = f"{keyword} lang:{lang} until:{until_str} since:{since_str}"
+                    lang_query = f" lang:{lang}" if lang else ""
+                    search_query_raw = f"{keyword}{lang_query} until:{until_str} since:{since_str}"
                     search_query = quote(search_query_raw)
 
                     session_data = self.scrape_tweets(search_query, target_per_session, search_type)

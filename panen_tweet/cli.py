@@ -48,7 +48,9 @@ def get_user_input():
         except ValueError:
             print("Input tidak valid, masukkan angka.")
 
-    lang = input("6. Masukkan kode bahasa (misal: 'id' untuk Indonesia, 'en' untuk Inggris): ")
+    lang = input("6. Masukkan kode bahasa (misal: 'id' atau 'en', kosongkan untuk semua bahasa): ").strip()
+    if not lang:
+        lang = None
 
     while True:
         choice = input("7. Pilih jenis tweet (1 untuk Top, 2 untuk Terbaru): ")
